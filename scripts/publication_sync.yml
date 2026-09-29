@@ -1,0 +1,43 @@
+# Settings for scripts/update_publications.py, used by the "Add publication by DOI" workflow.
+# That workflow only runs when you start it, and it opens a pull request; nothing is published until you merge it.
+# For DOI runs only mailto, target_bib and venue_abbreviations matter. The ORCID settings below are used only
+# when the script is run by hand without --doi (an OpenAlex scan by ORCID); nothing runs that on a schedule.
+
+# Your ORCID iD (the 16-digit part only).
+orcid: "0000-0003-4537-9184"
+
+# Optional: OpenAlex author IDs (A...) to query in addition to the ORCID.
+# Only add IDs you have checked belong to you; each ID pulls in every work OpenAlex assigned to it.
+openalex_author_ids: []
+
+# Ignore works published before this date (YYYY-MM-DD).
+from_publication_date: "2010-01-01"
+
+# Optional contact email sent to Crossref as `mailto` (Crossref's "polite pool" convention).
+# OpenAlex ignores mailto since Feb 2026; it uses the OPENALEX_API_KEY repository secret instead.
+mailto: ""
+
+# BibTeX file that new entries are appended to.
+target_bib: _bibliography/papers.bib
+
+# OpenAlex work types to accept. Empty list = accept everything.
+work_types: [article, review, book-chapter, preprint, dissertation]
+
+# DOIs that OpenAlex attributes to you but that are someone else's. They will never be proposed again.
+# One per line, for example:
+#   - "10.1016/j.example.2025.01.001"
+ignore_dois:
+
+# Short badge labels shown next to papers on the publications page (optional, exact venue names).
+venue_abbreviations:
+  "Combustion and Flame": "CNF"
+  "Proceedings of the Combustion Institute": "PROCI"
+  "Fuel": "Fuel"
+  "Energy & Fuels": "Energy Fuels"
+  "Langmuir": "Langmuir"
+  "Physical Review Fluids": "PRF"
+  "Physics of Fluids": "PoF"
+  "Journal of Fluid Mechanics": "JFM"
+  "The Journal of Supercritical Fluids": "J. Supercrit. Fluids"
+  "International Journal of Heat and Mass Transfer": "IJHMT"
+  "npj Microgravity": "npj Microgravity"

@@ -1,0 +1,555 @@
+/*******************************************************************************
+ * Site styles, loaded last by assets/css/main.scss so they win over the theme.
+ * They follow the old Google Site: Lora serif, Clemson orange, a photo banner
+ * with the page title on top of every page.
+ *
+ * Quick edits:
+ *   colors      the three --xg-* variables right below
+ *   fonts       the "body" rule (font-family, size, line height)
+ *   banner      .xg-banner (height) and .xg-banner-title (title size)
+ ******************************************************************************/
+
+@use "sass:string";
+
+:root {
+  --xg-orange: #f56600; // Clemson orange: section headings, names, the logo
+  --xg-link: #b85000; // darker orange for links in text, easier to read on white
+  --xg-link-hover: #8a3c00;
+
+  --global-text-color: #222;
+  --global-theme-color: var(--xg-link);
+  --global-hover-color: var(--xg-link-hover);
+}
+
+/* Lora, self-hosted (SIL Open Font License, see assets/fonts/lora/OFL.txt). */
+$lora-latin: string.unquote(
+  "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD"
+);
+$lora-latin-ext: string.unquote(
+  "U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF"
+);
+
+@each $subset, $range in ("latin": $lora-latin, "latin-ext": $lora-latin-ext) {
+  @each $weight, $style in (400 normal, 400 italic, 700 normal, 700 italic) {
+    @font-face {
+      font-family: "Lora";
+      font-style: $style;
+      font-weight: $weight;
+      font-display: swap;
+      src: url("../fonts/lora/lora-#{$subset}-#{$weight}-#{$style}.woff2") format("woff2");
+      unicode-range: $range;
+    }
+  }
+}
+
+@font-face {
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/lora/lora-latin-600-normal.woff2") format("woff2");
+  unicode-range: $lora-latin;
+}
+
+body {
+  font-family: "Lora", Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  line-height: 1.65;
+  // The banner is 100vw wide, which includes the vertical scrollbar on some systems.
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: inherit;
+}
+
+/* Section headings inside pages: Clemson orange, like the Google Site. */
+// Bold (700) at this size counts as large text, so Clemson orange (3.1:1 on white) is readable enough.
+.post article h2 {
+  color: var(--xg-orange);
+  font-size: 1.45rem;
+  font-weight: 700;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.post article h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+}
+
+/* Images in page text never get wider than the column, and figures (figure.liquid) are centered.
+   :where() keeps these rules weak, so the more specific rules further down still apply. */
+:where(.post article) img {
+  max-width: 100%;
+  height: auto;
+}
+
+:where(.post article figure) img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.post article p > a:not(.btn),
+.post article li > a:not(.btn) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/*******************************************************************************
+ * Navigation bar: Clemson logo + group name on the left, plain menu on the right
+ ******************************************************************************/
+
+.navbar {
+  opacity: 1;
+  padding-left: 0;
+  padding-right: 0;
+  line-height: 1.5; // keeps the bar at the height the theme expects (57px)
+}
+
+// Full-width bar: logo at the far left, menu at the far right.
+#navbar > .container {
+  max-width: none;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.navbar.navbar-light .navbar-brand.xg-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #333;
+  margin-right: 1rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  white-space: nowrap;
+
+  img {
+    height: 28px;
+    width: auto;
+  }
+
+  span {
+    color: inherit;
+  }
+}
+
+.navbar.navbar-light .navbar-nav .nav-item .nav-link {
+  color: #5f6368;
+
+  &:hover {
+    color: var(--xg-link);
+  }
+}
+
+.navbar.navbar-light .navbar-nav .nav-item.active > .nav-link {
+  color: #202124;
+  font-weight: 700;
+}
+
+// Hides the group name on screen but keeps it for screen readers.
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Tablets: the full menu has to fit on one line next to the logo, so the group name is hidden
+// and the menu gets tighter. Otherwise the bar grows to two lines and covers the top of the page.
+@media (min-width: 576px) and (max-width: 899.98px) {
+  .navbar.navbar-light .navbar-brand.xg-brand span {
+    @include visually-hidden;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 991.98px) {
+  .navbar.navbar-light .navbar-nav .nav-item .nav-link {
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  #navbar > .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .navbar.navbar-light .navbar-brand.xg-brand {
+    margin-right: 0.5rem;
+
+    img {
+      height: 22px;
+    }
+  }
+
+  .navbar.navbar-light .navbar-nav .nav-item .nav-link {
+    padding-left: 0.22rem;
+    padding-right: 0.22rem;
+    font-size: 0.82rem;
+  }
+}
+
+// Phones: logo, group name and the menu button on one line.
+@media (max-width: 575.98px) {
+  #navbar > .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .navbar.navbar-light .navbar-brand.xg-brand {
+    font-size: 0.95rem;
+    gap: 0.5rem;
+    margin-right: 0.5rem;
+
+    img {
+      height: 21px;
+    }
+  }
+}
+
+@media (max-width: 399.98px) {
+  .navbar.navbar-light .navbar-brand.xg-brand {
+    font-size: 0.88rem;
+    gap: 0.4rem;
+
+    img {
+      height: 19px;
+    }
+  }
+}
+
+@media (max-width: 339.98px) {
+  .navbar.navbar-light .navbar-brand.xg-brand span {
+    @include visually-hidden;
+  }
+}
+
+/*******************************************************************************
+ * Banner at the top of each page (_layouts/banner.liquid)
+ ******************************************************************************/
+
+.xg-banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  min-height: 250px;
+  margin-left: calc(50% - 50vw);
+  margin-top: -3rem; // cancels the top margin of the content container
+  margin-bottom: 2.5rem;
+  background-color: #3d4a57; // shown when a page has no banner image
+  background-size: cover;
+  background-position: center;
+  text-align: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, var(--xg-overlay, 0.3));
+  }
+}
+
+.xg-banner .xg-banner-title {
+  position: relative;
+  max-width: 900px;
+  margin: 0;
+  padding: 2rem 1rem;
+  color: var(--xg-banner-text, #fff);
+  font-size: 3.6rem;
+  font-weight: 400;
+  line-height: 1.2;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, var(--xg-shadow, 0.35));
+}
+
+@media (max-width: 575.98px) {
+  .xg-banner {
+    min-height: 150px;
+    margin-bottom: 1.75rem;
+  }
+
+  .xg-banner .xg-banner-title {
+    font-size: 2.2rem;
+    padding: 1.25rem 0.75rem;
+  }
+}
+
+/*******************************************************************************
+ * Page parts
+ ******************************************************************************/
+
+/* Home: sponsor logos (_data/sponsors.yml) */
+.xg-sponsors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem 2.5rem;
+  margin: 2.5rem 0;
+}
+
+.xg-sponsor {
+  width: 130px;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.4;
+
+  .xg-sponsor-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 140px;
+    margin-bottom: 0.6rem;
+  }
+
+  img {
+    max-width: 100%;
+    max-height: 140px;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+.xg-contact,
+.xg-contact p {
+  color: #3c5a88;
+}
+
+/* Research: figures side by side with captions */
+.xg-figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem 2rem;
+  align-items: start;
+  margin: 1.75rem 0 2rem;
+
+  figure {
+    margin: 0;
+    text-align: center;
+  }
+
+  img {
+    width: 100%;
+    max-width: var(--xg-fig-width, 380px);
+    height: auto;
+  }
+
+  figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: #444;
+  }
+}
+
+.xg-figures.xg-single {
+  grid-template-columns: 1fr;
+}
+
+/* Openings and other pages: small helpers usable in Markdown via <span class="..."> */
+.post article span.xg-accent {
+  color: var(--xg-link);
+}
+
+.xg-notes p,
+.xg-notes li {
+  font-size: 0.92rem;
+}
+
+.xg-notes li {
+  font-style: italic;
+}
+
+/* People (_pages/people.html, data in _data/people.yml) */
+.xg-person {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin: 1.25rem 0 2rem;
+}
+
+.xg-photo,
+.xg-initials {
+  flex-shrink: 0;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.xg-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  color: #888;
+  font-size: 2.4rem;
+}
+
+.xg-person-text {
+  flex: 1;
+  min-width: 0;
+
+  p {
+    margin-bottom: 0.35rem;
+  }
+}
+
+.post article .xg-person-name {
+  margin: 0 0 0.5rem;
+  font-size: 1.5rem; // 24px: large enough for Clemson orange to meet the contrast minimum
+  font-weight: 400;
+
+  .xg-name {
+    color: var(--xg-orange);
+  }
+
+  .xg-role {
+    color: #444;
+    font-size: 0.95rem;
+  }
+}
+
+.xg-list li {
+  margin-bottom: 0.3rem;
+}
+
+.post article p.xg-group-note {
+  margin: -0.5rem 0 0.5rem;
+  color: #555;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.xg-names {
+  line-height: 1.8;
+}
+
+@media (max-width: 575.98px) {
+  .xg-person {
+    gap: 1rem;
+  }
+
+  .xg-photo,
+  .xg-initials {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+/* News list (_includes/news_list.liquid): date and tag on the left, text on the right */
+.xg-news-years {
+  margin: -0.5rem 0 1.5rem;
+  font-size: 0.95rem;
+
+  a {
+    display: inline-block;
+    margin-right: 0.9rem;
+  }
+}
+
+.post article h2.xg-news-year {
+  margin-top: 2rem;
+  margin-bottom: 0.25rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid var(--xg-orange);
+}
+
+.xg-news-list {
+  list-style: none;
+  margin: 0 0 1.5rem;
+  padding: 0;
+}
+
+.post article li.xg-news-item {
+  display: grid;
+  grid-template-columns: 6.25rem 1fr;
+  gap: 0.2rem 1.25rem;
+  margin: 0;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #ececec;
+}
+
+.xg-news-list .xg-news-item:last-child {
+  border-bottom: 0;
+}
+
+.xg-news-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  padding-top: 0.1rem;
+}
+
+.post article span.xg-news-date {
+  color: var(--xg-link);
+  font-weight: 700;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.post article span.xg-news-tag {
+  color: #5a6470;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+// Tag colors, all dark enough to read at this small size.
+.post article span.xg-news-tag {
+  &.xg-tag-award { color: #a04600; }
+  &.xg-tag-welcome { color: #2f6f4e; }
+  &.xg-tag-graduation { color: #522d80; } // Clemson Regalia
+  &.xg-tag-funding { color: #1f4e79; }
+  &.xg-tag-talk { color: #7a4a14; }
+  &.xg-tag-lab { color: #2b2b2b; }
+  &.xg-tag-teaching { color: #006d77; }
+}
+
+.xg-news-text {
+  line-height: 1.6;
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .post article li.xg-news-item {
+    grid-template-columns: 1fr;
+    gap: 0.1rem;
+  }
+
+  .xg-news-meta {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+}
+
+/* Publications: keep the text of the colored venue badges white */
+.publications .abbr abbr div {
+  color: #fff;
+}

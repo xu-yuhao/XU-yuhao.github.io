@@ -1,0 +1,46 @@
+---
+layout: default
+---
+{%- comment -%}
+  A page with a full-width photo banner and the page title on top of it, like the old Google Site.
+  Used by every page in the menu. Options go in the page's front matter:
+
+  banner:
+    image: banners/research.jpg   # a file under assets/img/; leave it out for a plain dark banner
+    title: Research               # text on the banner; defaults to the page title
+    text_color: "#ffffff"         # color of that text
+    overlay: 0.3                  # how much to darken the photo, from 0 (not at all) to 0.7
+    position: center              # which part of the photo stays visible: top, center, bottom, or e.g. "50% 30%"
+    shadow: 0.35                  # soft dark glow behind the title text; 0 turns it off
+{%- endcomment -%}
+{% if page._styles %}
+  <style type="text/css">
+    {{ page._styles }}
+  </style>
+{% endif %}
+
+{% assign b = page.banner %}
+{% capture banner_style %}
+  {%- if b.image -%}background-image: url('{{ b.image | prepend: '/assets/img/' | relative_url }}');{%- endif -%}
+  {%- if b.position -%}background-position: {{ b.position }};{%- endif -%}
+  {%- if b.text_color -%}--xg-banner-text: {{ b.text_color }};{%- endif -%}
+  {%- if b.overlay != nil -%}--xg-overlay: {{ b.overlay }};{%- endif -%}
+  {%- if b.shadow != nil -%}--xg-shadow: {{ b.shadow }};{%- endif -%}
+{% endcapture %}
+{% assign banner_style = banner_style | strip %}
+
+<div class="post">
+  <header class="xg-banner" {% if banner_style != '' %}style="{{ banner_style }}"{% endif %}>
+    <h1 class="xg-banner-title">{{ b.title | default: page.title }}</h1>
+  </header>
+
+  <article>
+    {{ content }}
+  </article>
+
+  {% if page.social %}
+    <div class="social">
+      <div class="contact-icons">{% social_links %}</div>
+    </div>
+  {% endif %}
+</div>

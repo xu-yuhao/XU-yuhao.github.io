@@ -1,0 +1,51 @@
+name: Add publication by DOI
+
+# Manual helper, no schedule. Actions tab → "Add publication by DOI" → Run workflow → paste DOIs.
+# It fetches the BibTeX from Crossref (or OpenAlex for arXiv/DataCite DOIs), appends new entries to
+# _bibliography/papers.bib, and opens a pull request. Merging the pull request publishes the change.
+# If a DOI belongs to a paper that is already listed without a DOI (same title), the DOI is added to
+# that entry instead of creating a duplicate.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dois:
+        description: "One or more DOIs, separated by spaces or commas (e.g. 10.1016/j.combustflame.2024.113624)"
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  add:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Install PyYAML and run offline tests
+        run: |
+          python -m pip install --quiet "pyyaml>=6"
+          python -m unittest discover -s scripts/tests
+
+      - name: Build BibTeX entries
+        env:
+          OPENALEX_API_KEY: ${{ secrets.OPENALEX_API_KEY }}
+          DOIS: ${{ inputs.dois }}
+        run: |
+          python scripts/update_publications.py --summary "$RUNNER_TEMP/pr-body.md" --doi "$DOIS"
+          [ -f "$RUNNER_TEMP/pr-body.md" ] || echo "Nothing new." > "$RUNNER_TEMP/pr-body.md"
+
+      - name: Open pull request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: automation/add-dois-${{ github.run_id }}
+          title: "Publications: add DOIs"
+          commit-message: "Add publications by DOI"
+          body-path: ${{ runner.temp }}/pr-body.md
+          add-paths: _bibliography/papers.bib
+          delete-branch: true

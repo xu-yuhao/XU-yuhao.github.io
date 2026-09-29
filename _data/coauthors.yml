@@ -1,0 +1,7 @@
+# Optional: link co-author names on the publications page.
+# Key = last name in lowercase; firstname = every spelling used in the .bib files.
+# Example:
+# "doe":
+#   - firstname: ["Jane", "J."]
+#     url: https://example.edu/~jdoe
+{}

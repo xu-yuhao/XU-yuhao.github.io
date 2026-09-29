@@ -1,0 +1,30 @@
+# Sponsor logos on the home page (_includes/sponsors.liquid), shown in this order.
+# logo: image file under assets/img/, e.g. sponsors/nasa.png
+# url:  where the name under the logo links to (optional)
+#
+# To add a sponsor, upload its logo to assets/img/sponsors/ and copy one entry.
+# Keep the indentation (two spaces, no tabs).
+
+- name: NASA
+  logo: sponsors/nasa.png
+  url: https://www.nasa.gov/
+- name: NSF
+  logo: sponsors/nsf.png
+  url: https://www.nsf.gov/
+- name: Department of Education
+  logo: sponsors/education.png
+  url: https://www.ed.gov/
+- name: TEES
+  logo: sponsors/tees.png
+  url: https://tees.tamu.edu/
+- name: Sigma Xi
+  logo: sponsors/sigmaxi.png
+  url: https://www.sigmaxi.org/
+
+# Also sponsors in the CV, but not shown on the old Google Site. Upload a logo and remove the "# " to show them.
+# - name: Office of Naval Research
+#   logo: sponsors/onr.png
+#   url: https://www.onr.navy.mil/
+# - name: Princeton University
+#   logo: sponsors/princeton.png
+#   url: https://www.princeton.edu/

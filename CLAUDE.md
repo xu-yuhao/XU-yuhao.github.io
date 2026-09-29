@@ -1,0 +1,50 @@
+# Thermo-Fluids Research Laboratory website
+
+Jekyll site built on the al-folio v1.2 starter (runtime lives in the `al_folio_core` and other `al_*` gems; this repo only holds content and config). Served at https://xu-yuhao.github.io/ with an empty `baseurl`. `.github/workflows/deploy.yml` builds on every push to `main` that touches site content (pushes that only change the docs, `scripts/` or the DOI workflow are skipped by `paths-ignore`) and publishes `_site` to the `gh-pages` branch.
+
+The owner updates the site by hand: from the GitHub web UI, or by asking Claude Code. There is no scheduled automation. `UPDATING.md` is the owner-facing guide (in Chinese); keep it in sync if you change where content lives. Content comes from the owner's CV dated 2026-09-23 and the text and screenshots of the old Google Site; see `MIGRATION_NOTES.md`. The look deliberately imitates the old Google Site (Clemson logo + "Xu Research Group" in the top bar, a photo banner with the title on every page, Lora serif, Clemson orange headings). `title` in `_config.yml` ("Thermo-Fluids Research Laboratory") is used for browser tabs and metadata; the top bar shows `navbar_brand`.
+
+## Where content lives
+
+- Every page in the menu uses `_layouts/banner.liquid` (front matter `banner: {image, title, text_color, overlay, shadow, position}`; `image` is relative to `assets/img/`, banners live in `assets/img/banners/`). Menu order is `nav_order`: People 1, Research 2, Publications 3, Openings 4, News 5.
+- Site styles: `_sass/_custom.scss` (colors, fonts, banner, navbar, people cards, `.xg-figures` figure rows, sponsor row, news list `.xg-news*` and tag colors). Lora is self-hosted in `assets/fonts/lora/` (OFL).
+- Research areas: `_pages/research.md`; figures sit in `<div class="xg-figures" markdown="0">` rows of `figure.liquid` includes (`xg-single` for one centered figure); two missing figures are kept in a `{% comment %}` block. Openings: `_pages/openings.md` (owner's text, keep wording).
+- Home page text (owner's wording from the old site): `_pages/about.md`; sponsor logo row: `_data/sponsors.yml` via `_includes/sponsors.liquid`; contact icons: `_data/socials.yml`.
+- The email address is repeated in `_data/people.yml`, `_data/socials.yml`, the `xg-contact` line at the bottom of `_pages/about.md`, `research.md` and `openings.md`, and the openings text; change them together.
+- People: `_data/people.yml` (rendered by `_pages/people.html`; photos in `assets/img/people/`, path given relative to `assets/img/`; `_includes/person_photo.liquid` shows initials when there is no photo). `pi:` has `name`, `degree`, `photo`, `lines` (title, office, address), `email`, `phone`. `current:` and `alumni:` are lists of groups with `members:`; profile groups use `role`, `bio`, `interests`; `style: list` renders `name` + `info`; `style: names` renders only the names on one line (used for Creative Inquiry students); optional `note:` under the heading; `hide: true` on a member or a group hides it without deleting it.
+- All images in `assets/img/{banners,people,research,sponsors,logo}` were cut from low-resolution screenshots of the old site as placeholders. Replacing a file under the same name is the intended update path.
+- News: one file per item in `_news/`, named `YYYY-MM-DD-slug.md`, front matter `layout: post`, `date:`, `date_display:` (optional; without it the date shows as `Dec 5, 2026`), `category:` (optional; one of the eight below), `inline: true`, `related_posts: false`; the body must not be empty. Rendered by the repo's own `_includes/news_list.liquid` (home page shows 3; `/news/` uses `by_year=true`: year headings, the year is stripped from `date_display`, year-only items show no date label). See "News from the CV" below.
+- Section names follow the CV: Refereed Journal Publications (`@article`) and Conference Proceedings (Reviewed) (`@inproceedings`) in `_bibliography/papers.bib`; Conference Proceedings (Unreviewed), i.e. abstract-only, in `_bibliography/presentations.bib`; Invited Talks (`@misc`, venue in `note`) in `_bibliography/talks.bib`. Papers under review and submitted abstracts stay off the site; accepted but not yet held meetings get `note = {Accepted}`.
+- Author format `Last, F.M.` with the CV's marks right after the last name: `*` corresponding author, `†` equal contribution, `‡` student (co-)advisee (e.g. `Liu‡, X. and Xu*, Y.`). `abbr` badge colors live in `_data/venues.yml`.
+- DOIs: `.github/workflows/add-publication.yml` (run by hand) builds entries from Crossref/OpenAlex with `scripts/update_publications.py --doi` and opens a PR; it fills the DOI into an existing DOI-less entry with the same or near-identical title. The Claude Code container may not reach api.crossref.org, so prefer that workflow over fetching metadata yourself.
+- Migration status and unverified items: `MIGRATION_NOTES.md`
+- DOI helper settings (Crossref mailto, venue abbreviations): `scripts/publication_sync.yml`
+
+## News from the CV
+
+The owner wants News maintained from the CV. When given a new CV, add only events that are not in `_news/` yet; never rewrite the owner's own items without asking. Every item must trace to a line in the CV (or the owner's message); check names, program names and dates against the source.
+
+- Categories (`category:`): award (honors of the PI or students), welcome (people joining: graduate students by their "since <month year>", undergraduate program cohorts such as Creative Inquiry, EUREKA!, SURP, Senior Departmental Honors, high school interns; list only people new that semester), graduation (degrees of students Dr. Xu advised or co-advised; say "graduated with an M.S. degree" unless a defense is stated), funding (grants where Dr. Xu is PI, Sole PI, Institutional PI or Co-PI, dated by start year, no dollar amounts), talk (invited talks, exact date; for a meeting spanning several days `date` is the first day, `date_display` its month, and the span goes in the text, as in `2023-02-27-talk-macccr-2023.md`), service (boards, working groups, session/abstract chair, workshop organizer, competition judge (ask the owner before adding one)), teaching (new course development only), lab (lab milestones).
+- Leave out: society memberships, reviewing and panels, internal committees, workshops attended, routine teaching, papers and conference talks (the publications page has them), committee-only students, and Senior Design teams.
+- `date_display` must match the source precision ("Apr 2026", "Mar 5, 2025", "Fall 2025", "2025"); never a range or a multi-day span (the label column is narrow; put spans in the text). `date` sorts: the exact day when any source gives it, even if `date_display` is coarser (e.g. `2023-11-18` under "Nov 2023"); else the 15th of the month; Spring 01-15, Summer 06-01, Fall 08-20 (also academic-year cohorts); year only 06-30, unless the source or context places the event within the year (first term taught, a later cohort, grant start). Keep the dates of existing items.
+- Style: one or two sentences; "Ph.D. student <full name>" on first mention; "Dr. Xu" for the PI ("Yuhao Xu" for events before his 2017 Ph.D.); "Welcome!" after joins, "Congratulations!" after student honors and graduations; pronouns only where a source states them; no em-dashes; no adjectives the source does not use.
+- To hide an item without deleting it, add `published: false` to its front matter (Jekyll then leaves it out of the list and the site search). Items with `published: false` and people or groups with `hide: true` were hidden by the owner: count them as present, and do not unhide, delete or re-add them when updating from a CV.
+
+## Rules
+
+- Do not shadow more gem-owned files (a `_layouts/`, `_includes/`, `_sass/` or `assets/` file with the same name as one in `al_folio_core`); that forks them and breaks upgrades. Two overrides exist on purpose: `assets/css/main.scss` (the gem's file plus `@use "custom";`) and `_includes/header.liquid` (brand block and search button, marked "Local change"). Both are acknowledged in `.al-folio-overrides.yml`; after a gem upgrade run `bundle exec al-folio upgrade overrides audit`, diff both against the new gem version, then `accept` them again. `.xg-banner` uses `margin-top: -3rem` to cancel the theme's `.mt-5` on the content container; if an upgrade changes that margin, the banner slides under the fixed top bar. Put new styles in `_sass/_custom.scss` and new markup in includes/layouts with their own names.
+- `Gemfile` and the `plugins:` list in `_config.yml` must stay in sync. Leave both alone unless asked.
+- BibTeX: never put an `@` in `%` comment lines (BibTeX parses it as an entry and the build fails); every entry needs a unique key; keep `doi` lowercase without the `https://doi.org/` prefix; `selected = {true}` marks a paper for the home page; the "Selected publications" block in `_pages/about.md` is commented out until the first paper is marked. Never invent DOIs, page numbers or author lists. If something is unknown, leave the field out.
+- Do not fabricate people, dates, awards or news. Ask the owner when a detail is missing.
+- Commit on a new branch and open a pull request for the owner to review, unless told to push to `main`. Before asking the owner to merge, build the site and send screenshots of the changed pages: GitHub Pages has no preview of unmerged changes.
+- Gem upgrades need `Gemfile` and `Gemfile.lock` changed together (`bundle update <gem>`); CI installs in frozen mode.
+
+## Checks before pushing
+
+```bash
+python -m unittest discover -s scripts/tests          # DOI helper script
+bundle install
+LANG=C.UTF-8 bundle exec jekyll build                  # must end with "done in ..."
+```
+
+Without ImageMagick installed locally the build logs `convert: not found` for each image but still succeeds; CI installs ImageMagick itself. The navbar must stay on one line at every width (a second line hides the top of the page under the fixed bar); after changing menu titles, the brand or navbar styles, check widths 320 to 1280 px.

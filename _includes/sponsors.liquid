@@ -1,0 +1,17 @@
+{%- comment -%} Sponsor logo row for the home page. Data: _data/sponsors.yml {%- endcomment -%}
+<div class="xg-sponsors" markdown="0">
+  {%- for s in site.data.sponsors -%}
+    <div class="xg-sponsor">
+      <div class="xg-sponsor-logo">
+        {%- if s.logo -%}
+          <img src="{{ s.logo | prepend: '/assets/img/' | relative_url }}" alt="{{ s.name }} logo" loading="lazy">
+        {%- endif -%}
+      </div>
+      {%- if s.url -%}
+        <a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.name }}</a>
+      {%- else -%}
+        {{ s.name }}
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</div>

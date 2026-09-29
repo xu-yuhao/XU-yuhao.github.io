@@ -1,0 +1,81 @@
+{%- comment -%}
+  News list used by the home page and /news/. Items are the files in _news/, newest first.
+
+  Front matter of a news item:
+    date: 2026-04-15            used for sorting (and shown when there is no date_display)
+    date_display: "Apr 2026"    optional; shown instead of the date when only the month, season or year is known
+    category: award             optional small tag: award, welcome, graduation, funding, talk, service, teaching or lab
+
+  Parameters:
+    limit=3        show only the newest items (home page)
+    by_year=true   group items under year headings, with a row of year links on top when there are more
+                   than 3 years (/news/ page)
+
+  The body text must not be empty (the theme's site search uses it).
+
+  Styles: "News list" in _sass/_custom.scss.
+{%- endcomment -%}
+{%- assign items = site.news | sort: 'date' | reverse -%}
+{%- assign max = include.limit | default: items.size -%}
+{%- if items.size == 0 -%}
+  <p>No news so far.</p>
+{%- else -%}
+  <div class="xg-news">
+    {%- if include.by_year -%}
+      {%- assign year_list = '' -%}
+      {%- for item in items -%}
+        {%- assign y = item.date | date: '%Y' -%}
+        {%- unless year_list contains y -%}
+          {%- assign year_list = year_list | append: y | append: ',' -%}
+        {%- endunless -%}
+      {%- endfor -%}
+      {%- assign years = year_list | split: ',' -%}
+      {%- if years.size > 3 -%}
+        <nav class="xg-news-years" aria-label="Jump to year">
+          {%- for y in years -%}
+            <a href="#y{{ y }}">{{ y }}</a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- assign prev_year = '' -%}
+    {%- for item in items limit: max -%}
+      {%- assign y = item.date | date: '%Y' -%}
+      {%- if include.by_year and y != prev_year -%}
+        {%- unless forloop.first -%}</ol>{%- endunless -%}
+        <h2 class="xg-news-year" id="y{{ y }}">{{ y }}</h2>
+        <ol class="xg-news-list">
+        {%- assign prev_year = y -%}
+      {%- elsif forloop.first -%}
+        <ol class="xg-news-list">
+      {%- endif -%}
+
+      {%- if item.date_display -%}
+        {%- assign full = item.date_display | append: '' -%}
+      {%- else -%}
+        {%- assign full = item.date | date: '%b %-d, %Y' -%}
+      {%- endif -%}
+      {%- assign label = full -%}
+      {%- if include.by_year -%}
+        {%- comment -%} Under a year heading only the month/season is shown; a year-only item shows no date. {%- endcomment -%}
+        {%- assign label = full | remove: y | remove: ',' | strip -%}
+      {%- endif -%}
+
+      <li class="xg-news-item">
+        <div class="xg-news-meta">
+          {%- if label != '' -%}<span class="xg-news-date">{{ label }}</span>{%- endif -%}
+          {%- if item.category -%}
+            <span class="xg-news-tag xg-tag-{{ item.category | slugify }}">{{ item.category | capitalize }}</span>
+          {%- endif -%}
+        </div>
+        <div class="xg-news-text">
+          {%- comment -%} News items have no pages of their own (output: false), so the text is always shown in full. {%- endcomment -%}
+          {%- assign body = item.content | remove: '<p>' | remove: '</p>' | strip -%}
+          {%- if body == '' -%}{{ item.title }}{%- else -%}{{ body | emojify }}{%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+    </ol>
+  </div>
+{%- endif -%}

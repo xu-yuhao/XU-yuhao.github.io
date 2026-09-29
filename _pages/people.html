@@ -1,0 +1,109 @@
+---
+layout: banner
+permalink: /people/
+title: People
+nav: true
+nav_order: 1
+
+banner:
+  image: banners/office.jpg
+  text_color: "#d9ccff"
+---
+
+<!-- Content comes from _data/people.yml. Edit that file, not this one. Styles: _sass/_custom.scss -->
+
+{% assign people = site.data.people %}
+
+{% if people.pi and people.pi.size > 0 %}
+  <h2>Principal Investigator</h2>
+  {% for pi in people.pi %}
+    <div class="xg-person">
+      {% include person_photo.liquid person=pi %}
+      <div class="xg-person-text">
+        <h3 class="xg-person-name">
+          <span class="xg-name">{{ pi.name }}{% if pi.degree %}, {{ pi.degree }}{% endif %}</span>
+        </h3>
+        {% if pi.lines %}
+          <p>
+            {% for line in pi.lines %}{{ line }}{% unless forloop.last %}<br>{% endunless %}{% endfor %}
+          </p>
+        {% endif %}
+        {% if pi.bio %}{{ pi.bio | markdownify }}{% endif %}
+        {% if pi.email or pi.phone %}
+          <p>
+            {% if pi.email %}Email: <a href="mailto:{{ pi.email }}">{{ pi.email }}</a>{% endif %}
+            {% if pi.email and pi.phone %}<br>{% endif %}
+            {% if pi.phone %}Phone: {{ pi.phone }}{% endif %}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% endif %}
+
+{% for group in people.current %}
+  {% assign members = group.members | where_exp: "m", "m.hide != true" %}
+  {% if group.hide != true and members.size > 0 %}
+    <h2>{{ group.group }}</h2>
+    {% if group.note %}<p class="xg-group-note">{{ group.note }}</p>{% endif %}
+    {% if group.style == 'names' %}
+      <p class="xg-names">
+        {% for m in members %}{{ m.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+      </p>
+    {% elsif group.style == 'list' %}
+      <ul class="xg-list">
+        {% for m in members %}
+          <li>
+            <strong>{{ m.name }}</strong>
+            {%- if m.info %}, {{ m.info | markdownify | remove: '<p>' | remove: '</p>' | strip }}{% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      {% for m in members %}
+        <div class="xg-person">
+          {% include person_photo.liquid person=m %}
+          <div class="xg-person-text">
+            <h3 class="xg-person-name">
+              <span class="xg-name">{% if m.url %}<a href="{{ m.url }}">{{ m.name }}</a>{% else %}{{ m.name }}{% endif %}{% if m.role %},{% endif %}</span>
+              {% if m.role %}<span class="xg-role">{{ m.role }}</span>{% endif %}
+            </h3>
+            {% if m.bio %}{{ m.bio | markdownify }}{% endif %}
+            {% if m.info %}{{ m.info | markdownify }}{% endif %}
+            {% if m.interests %}<p><strong>Current research interest:</strong> {{ m.interests }}</p>{% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{% assign alumni_count = 0 %}
+{% for group in people.alumni %}
+  {% assign members = group.members | where_exp: "m", "m.hide != true" %}
+  {% if group.hide != true %}{% assign alumni_count = alumni_count | plus: members.size %}{% endif %}
+{% endfor %}
+{% if alumni_count > 0 %}
+  <h2>Alumni</h2>
+  {% for group in people.alumni %}
+    {% assign members = group.members | where_exp: "m", "m.hide != true" %}
+    {% if group.hide != true and members.size > 0 %}
+      <h3>{{ group.group }}</h3>
+      {% if group.note %}<p class="xg-group-note">{{ group.note }}</p>{% endif %}
+      {% if group.style == 'names' %}
+        <p class="xg-names">
+          {% for a in members %}{{ a.name }}{% unless forloop.last %}, {% endunless %}{% endfor %}
+        </p>
+      {% else %}
+        <ul class="xg-list">
+          {% for a in members %}
+            <li>
+              <strong>{{ a.name }}</strong>
+              {%- if a.info %}, {{ a.info | markdownify | remove: '<p>' | remove: '</p>' | strip }}{% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endif %}

@@ -1,0 +1,63 @@
+name: Deploy site
+
+# Builds the Jekyll site and publishes _site to the gh-pages branch.
+# Settings → Pages → "Deploy from a branch" → gh-pages / (root) must be selected once.
+# Pull requests only build (as a check); pushes to main build and deploy.
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "README.md"
+      - "UPDATING.md"
+      - "MIGRATION_NOTES.md"
+      - "CLAUDE.md"
+      - "scripts/**"
+      - ".github/workflows/add-publication.yml"
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3.5"
+          bundler-cache: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+
+      - name: Install ImageMagick
+        run: sudo apt-get update && sudo apt-get install -y imagemagick
+
+      - name: Build
+        env:
+          JEKYLL_ENV: production
+        run: bundle exec jekyll build
+
+      - name: Purge unused CSS
+        run: npx --yes purgecss@8.0.0 -c purgecss.config.js
+
+      - name: Deploy to gh-pages
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: _site

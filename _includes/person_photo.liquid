@@ -1,0 +1,15 @@
+{%- comment -%}
+  Headshot for the people page. Shows the initials when the person has no photo yet.
+  Parameter: person (an entry from _data/people.yml)
+{%- endcomment -%}
+{%- assign p = include.person -%}
+{%- if p.photo -%}
+  {%- comment -%} Empty alt: the name is printed right next to the photo. {%- endcomment -%}
+  <img class="xg-photo" src="{{ p.photo | prepend: '/assets/img/' | relative_url }}" alt="" loading="lazy">
+{%- else -%}
+  {%- assign parts = p.name | strip | split: ' ' -%}
+  <div class="xg-initials" aria-hidden="true">
+    {{- parts.first | slice: 0, 1 -}}
+    {%- if parts.size > 1 -%}{{- parts.last | slice: 0, 1 -}}{%- endif -%}
+  </div>
+{%- endif -%}

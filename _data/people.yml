@@ -1,0 +1,173 @@
+# People page data (rendered by _pages/people.html).
+# PI and student profiles follow the old Google Site; the other lists come from the CV dated 2026-09-23.
+#
+# photo:     file under assets/img/, e.g. people/jane_doe.jpg. Leave empty to show initials instead.
+#            A square photo works best (it is cropped to a square).
+# role:      shown after the name, e.g. Ph.D. Student
+# bio:       one or more sentences
+# interests: shown after "Current research interest:"
+# info:      one short line, used by the lists (undergraduates and alumni)
+# style: list   shows a group as a list (name and info, no photos) instead of profiles.
+# style: names  shows only the names, on one line (info is kept in the file but not shown).
+# note:         optional line in italics under the group heading.
+# hide: true    on a person hides that person; on a group (next to "group:") hides the whole group.
+#               Nothing is deleted, so removing the line brings it back.
+# A group with no visible members is hidden automatically.
+#
+# Keep the double quotes around text that contains a colon, or that starts with "[" or "*".
+# To add someone, copy the commented example lines under the right group, remove the "# " at the start
+# of each line, and fill them in. Indentation must stay exactly as shown (spaces, not tabs).
+
+pi:
+  - name: Yuhao Xu
+    degree: Ph.D.
+    photo: people/yuhao_xu.jpg
+    lines:
+      - Assistant Professor, Department of Mechanical Engineering
+      - 231 Fluor Daniel Engineering Innovation Building (EIB)
+      - Clemson University, Clemson, SC 29634
+    email: yuhaox@clemson.edu
+    phone: 864-656-0545
+
+current:
+  - group: Current Students
+    members:
+      # - name: Jane Doe
+      #   role: Ph.D. Student
+      #   photo: people/jane_doe.jpg
+      #   bio: "Jane received a B.S. degree in Mechanical Engineering in 2026 from Clemson University."
+      #   interests: "droplet combustion; laser diagnostics"
+      - name: Xi Liu
+        role: Ph.D. Student
+        photo: people/xi_liu.jpg
+        bio: "Xi received her B.S. degree in Building Environment and Equipment Engineering in 2015 from Wuhan Textile University and her M.S. degree in Power Engineering in 2018 from Guangzhou Institute of Energy Conversion, Chinese Academy of Sciences."
+        interests: "combustion diagnostics; sustainable fuels; life-cycle analysis"
+      - name: Minghui Xu
+        role: Ph.D. Student
+        photo: people/minghui_xu.jpg
+        bio: "Minghui received his B.S. degree in Building Environment and Equipment Engineering in 2019 from Northeast Agricultural University and his M.S. degree in Power Engineering in 2022 from Chongqing University."
+        interests: "sooting dynamics during combustion; image analysis"
+      - name: Daniel Olurotimi
+        role: Ph.D. Student
+        photo: people/daniel_olurotimi.jpg
+        bio: "Daniel received his B.S. degree in Mechanical Engineering in 2025 from Clemson University. Daniel is a recipient of the 2025-26 GAANN fellowship supporting his Ph.D. studies."
+        interests: "supercritical water oxidation"
+      - name: Md Mainul Islam
+        role: Ph.D. Student (co-advised)
+        photo:
+        bio: "Mainul completed an M.S. at Clemson University in 2026 with a thesis on electrokinetic flow instabilities in non-Newtonian fluids with conductivity gradients."
+        interests: "electrokinetic instability in microchannel flows with conductivity gradients"
+      - name: Ananth Sundar
+        role: M.S. Student
+        photo: people/ananth_sundar.jpg
+        bio: "Ananth received his B.Eng. degree in Mechanical Engineering in 2025 from the National Institute of Technology, Tiruchirappalli, India."
+        interests: "plasma and high-enthalpy tests for aerospace applications"
+
+  - group: Undergraduate Researchers
+    style: list
+    members:
+      # - name: Jane Doe
+      #   info: "EUREKA! Undergraduate Research Program (Summer 2027)"
+      - name: Andrew Scribner
+        info: "Senior Departmental Honors Program (Fall 2026–): experiments on Leidenfrost phenomena of liquid fuels"
+      - name: Aakash Karvir
+        info: "EUREKA! Undergraduate Research Program (Summer 2026); Creative Inquiry (Fall 2026)"
+
+  - group: Creative Inquiry Students
+    note: "Creative Inquiry team “Droplet Combust & Flame”"
+    style: names
+    members:
+      # - name: Jane Doe
+      #   info: "Creative Inquiry (Fall 2026)"
+      - name: Moriah High
+        info: "Creative Inquiry (Fall 2025–)"
+      - name: Dhey Patel
+        info: "Creative Inquiry (Spring 2026–)"
+      - name: Andry Aguero
+        info: "Creative Inquiry (Fall 2026)"
+      - name: Michael Boswell
+        info: "Creative Inquiry (Fall 2026)"
+      - name: Paul Botti
+        info: "Creative Inquiry (Fall 2026)"
+      - name: Sofia Fassolakis
+        info: "Creative Inquiry (Fall 2026)"
+      - name: Spencer Nickle
+        info: "Creative Inquiry (Fall 2026)"
+      - name: Jared Spack
+        info: "Creative Inquiry (Fall 2026)"
+      - name: Patrick Wright
+        info: "Creative Inquiry (Fall 2026)"
+
+alumni:
+  - group: Graduate Students
+    members:
+      # - name: Jane Doe
+      #   info: "M.S. 2027, Clemson University; now at GE Aerospace"
+      - name: Xinquan Liang
+        info: "M.S. 2026, Clemson University"
+      - name: Yemboado Yonli
+        info: "M.S. 2023, Prairie View A&M University"
+      - name: Caleb Riggins
+        info: "M.S. 2023, Prairie View A&M University; undergraduate researcher 2020–2021 (PVAMU Faculty RISE Undergraduate Research Award)"
+      - name: Mercedes J. Johnson
+        info: "M.S. 2023, Prairie View A&M University"
+      - name: Haivany M. Youmou
+        info: "M.S. 2021, Prairie View A&M University (co-advised)"
+      - name: Beatriz Ramirez-Garcia
+        info: "M.S. 2021, Prairie View A&M University (co-advised)"
+      - name: Faravi Ahmed
+        info: "M.S. 2021, Prairie View A&M University (co-advised)"
+      - name: Olivia M. Murphy
+        info: "M.S. 2021, Prairie View A&M University (co-advised)"
+
+  - group: Undergraduate and High School Researchers
+    members:
+      # - name: Jane Doe
+      #   info: "Clemson, EUREKA! Undergraduate Research Program, Summer 2026"
+      - name: Aaron Cecil
+        info: "Clemson, 2025–2026 (Clemson Summer Undergraduate Research Program; Senior Departmental Honors); 2026 NSF Graduate Research Fellow"
+      - name: Catherine Finch
+        info: "Clemson, Summer 2026"
+      - name: Mailin Weilage
+        info: "Clemson, EUREKA! Undergraduate Research Program, Summer 2026"
+      - name: Trey Hill
+        info: "High school student, Summer Program for Research Interns (South Carolina Governor's School for Science and Mathematics), Summer 2026"
+      - name: SJ Hill
+        info: "High school student, Summer Program for Research Interns (South Carolina Governor's School for Science and Mathematics), Summer 2026"
+      - name: Anjali Perera
+        info: "Clemson, EUREKA! Undergraduate Research Program, Summer 2025"
+      - name: Bryson Still
+        info: "Clemson, EUREKA! Undergraduate Research Program, Summer 2025"
+      - name: Regan O’Neill
+        info: "Clemson, 2024–2025; 2025 Goldwater Scholar"
+      - name: Lia Anderson
+        info: "Clemson, 2024–2025"
+      - name: Muhammed Y. Zaidi
+        info: "Prairie View A&M University, 2022–2023 (PVAMU Faculty RISE Undergraduate Research Award)"
+      - name: Heba Afzal
+        info: "Prairie View A&M University, 2022–2023"
+      - name: Amna Ansari
+        info: "Prairie View A&M University, 2020"
+      - name: Mustafa Jaffara
+        info: "Prairie View A&M University, 2020"
+      - name: Othneil Mclean
+        info: "Prairie View A&M University, 2019 (ORISP Undergraduate Student Research Funding)"
+
+  - group: Creative Inquiry Students
+    note: "Clemson Creative Inquiry team “Droplet Combust & Flame,” 2025–2026"
+    style: names
+    members:
+      # - name: Jane Doe
+      #   info: "Clemson, Creative Inquiry, Fall 2026"
+      - name: Eric Shores
+        info: "Clemson, Creative Inquiry, Spring 2026"
+      - name: Logan Spencer
+        info: "Clemson, Creative Inquiry, 2025–2026"
+      - name: Jack Dodman
+        info: "Clemson, Creative Inquiry, 2025–2026"
+      - name: Coleman Turner
+        info: "Clemson, Creative Inquiry, Spring 2025"
+      - name: Grace Peacock
+        info: "Clemson, Creative Inquiry, Spring 2025"
+      - name: Emily Carey
+        info: "Clemson, Creative Inquiry, Spring 2025"

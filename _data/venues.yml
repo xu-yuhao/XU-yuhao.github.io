@@ -1,0 +1,42 @@
+# Badge colors for the `abbr` field of BibTeX entries. An abbr not listed here uses the theme color.
+# Pick dark colors: badge text is white.
+
+# Combustion
+"CNF": { color: "#8c2d1f" }
+"PROCI": { color: "#8c2d1f" }
+"Combust. Symp.": { color: "#8c2d1f" }
+"USNCM": { color: "#8c2d1f" }
+"ESSCI": { color: "#8c2d1f" }
+# Fuels
+"Fuel": { color: "#8a5a12" }
+"Energy Fuels": { color: "#8a5a12" }
+# Space and microgravity
+"ASGSR": { color: "#2f6f4e" }
+# Fluid dynamics
+"APS DFD": { color: "#4b3f72" }
+# Engineering societies and conferences
+"AIAA": { color: "#1f4e79" }
+"ASME": { color: "#1f4e79" }
+"ASEE": { color: "#1f4e79" }
+"ASTFE": { color: "#1f4e79" }
+"IISE": { color: "#1f4e79" }
+"PRTEC": { color: "#1f4e79" }
+# Other journals and meetings
+"TPAMI": { color: "#4a5560" }
+"PRB": { color: "#4a5560" }
+"JPCC": { color: "#4a5560" }
+"JMM": { color: "#4a5560" }
+"APL": { color: "#4a5560" }
+"Anal. Chem.": { color: "#4a5560" }
+"Soft Matter": { color: "#4a5560" }
+"Sci. Rep.": { color: "#4a5560" }
+"ACS": { color: "#4a5560" }
+"ICORS": { color: "#4a5560" }
+"CVPR": { color: "#4a5560" }
+"ICES": { color: "#2f6f4e" }
+"HICE": { color: "#1f4e79" }
+"NCUR": { color: "#1f4e79" }
+"Langmuir": { color: "#4a5560" }
+"PRF": { color: "#4b3f72" }
+"PoF": { color: "#4b3f72" }
+"JFM": { color: "#4b3f72" }

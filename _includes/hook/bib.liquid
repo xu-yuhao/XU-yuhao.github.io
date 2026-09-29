@@ -1,0 +1,14 @@
+{%- comment -%}
+  Hook provided by the theme's bib layout (included just before the "journal, year" line is printed).
+  The theme shows only the journal name for articles; this adds volume(number): pages from the .bib entry,
+  e.g. "Combustion and Flame, 169: 216–228, 2016".
+{%- endcomment -%}
+{%- if entry.type == 'article' -%}
+  {%- capture vol_pages -%}
+    {%- if entry.volume -%}{{ entry.volume }}{%- if entry.number -%}({{ entry.number }}){%- endif -%}{%- endif -%}
+    {%- if entry.pages -%}{%- if entry.volume -%}: {% endif -%}{{ entry.pages }}{%- endif -%}
+  {%- endcapture -%}
+  {%- if vol_pages != '' -%}
+    {%- capture entrytype -%}{{ entrytype }}, {{ vol_pages }}{%- endcapture -%}
+  {%- endif -%}
+{%- endif -%}
