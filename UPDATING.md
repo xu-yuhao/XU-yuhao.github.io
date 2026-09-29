@@ -6,7 +6,7 @@
 
 ## 三种更新方式
 
-1. **在 GitHub 网页上直接改**。电脑或手机浏览器都行：打开仓库 <https://github.com/xu-yuhao/XU-yuhao.github.io>，找到文件，点右上角铅笔图标，改完点 **Commit changes**。适合加一条新闻、改一个名字这类小改动。
+1. **在 GitHub 网页上直接改**。电脑或手机浏览器都行：打开仓库 <https://github.com/xu-yuhao/xu-yuhao.github.io>，找到文件，点右上角铅笔图标，改完点 **Commit changes**。适合加一条新闻、改一个名字这类小改动。
 2. **让 Claude Code 改**。在 <https://claude.ai/code> 或手机 Claude App 里选中这个仓库，直接说要做什么，比如"加一条新闻：某某同学获得 2026 年 ASGSR 研究生海报一等奖，2026 年 12 月"，或者把 CV 里的一条引用粘贴过去说"加到论文列表"。它会按 `CLAUDE.md` 里的规则改好文件，开一个 pull request（PR），还可以先截图给你看效果。你在 GitHub 上点 **Merge pull request** 就发表了。适合一次改好几处，或者不想碰格式的时候。
 3. **有 DOI 的论文用 DOI 助手**：**Actions → Add publication by DOI → Run workflow**，粘贴 DOI（可以一次粘好几个，用空格或逗号分开），点绿色按钮。一两分钟后 **Pull requests** 里会出现一个 PR，里面是从 Crossref 取来的标准格式条目；看一眼，点 **Merge pull request**。如果这篇论文已经在列表里、只是缺 DOI（比如从 CV 导入的旧论文），它会把 DOI 补进原条目，不会重复添加。第一次用之前要做一个设置，见"第一次发表"第 5 步。
 
@@ -301,7 +301,7 @@ banner:
 
 ### 第一次发表（只做一次）
 
-1. 打开 <https://github.com/xu-yuhao/XU-yuhao.github.io/compare/main...claude/website-migration-github-pages-2bimfr>，点 **Create pull request**，再点一次 **Create pull request**，然后点 **Merge pull request → Confirm merge**。
+1. 打开 <https://github.com/xu-yuhao/xu-yuhao.github.io/compare/main...claude/website-migration-github-pages-2bimfr>，点 **Create pull request**，再点一次 **Create pull request**，然后点 **Merge pull request → Confirm merge**。
 2. 打开 **Actions** 标签页，等最上面那一条 `Deploy site`（标题以 "Merge pull request" 开头的那条，不是更早那条只做检查的）出现绿勾，大约 3 到 5 分钟。旁边可能同时出现一个红叉的 `pages build and deployment`，GitHub 也可能发一封构建失败的邮件。这是旧的 Pages 设置还在直接构建 `main`，做完下一步就不会再出现。
 3. **Settings → Pages → Build and deployment**：Source 选 **Deploy from a branch**，Branch 选 **gh-pages**，文件夹选 **/(root)**，点 **Save**。如果下拉里还没有 gh-pages，等一两分钟刷新页面再选。
 4. 过一两分钟打开 <https://xu-yuhao.github.io/>。如果还是旧页面，强制刷新一次（电脑上按 Ctrl+Shift+R，Mac 上按 Cmd+Shift+R）。
@@ -330,5 +330,4 @@ GitHub Pages 本身没有"草稿预览"，改动一合并就上线。实际用�
 
 ## 可选设置
 
-- 仓库名改成全小写的 `xu-yuhao.github.io`（Settings → General → Repository name）。现在带大写的名字也能正常使用，改成小写是为了和 GitHub 文档的写法一致。
 - DOI 助手遇到 arXiv 等不在 Crossref 登记的 DOI 时，会改用 OpenAlex 查询。每天的免费额度足够用；如果以后提示超出额度，在 <https://openalex.org/settings/api> 申请一个免费 key，存为仓库 secret `OPENALEX_API_KEY`（Settings → Secrets and variables → Actions → New repository secret）。

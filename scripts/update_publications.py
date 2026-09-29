@@ -42,7 +42,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_CONFIG = REPO_ROOT / "scripts" / "publication_sync.yml"
 OPENALEX = "https://api.openalex.org"
 CROSSREF = "https://api.crossref.org"
-USER_AGENT = "xu-yuhao.github.io publication sync (+https://github.com/xu-yuhao/XU-yuhao.github.io)"
+USER_AGENT = "xu-yuhao.github.io publication sync (+https://github.com/xu-yuhao/xu-yuhao.github.io)"
 
 PREPRINT_TYPES = ("preprint", "posted-content")
 MARKER = "% ---- Added automatically by scripts/update_publications.py (review before merging) ----"
